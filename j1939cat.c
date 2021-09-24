@@ -273,9 +273,12 @@ static int j1939cat_extract_serr(struct j1939cat_priv *priv)
 		case J1939_EE_INFO_RX_DPO:
 			stats->tskey = serr->ee_data;
 			j1939cat_print_timestamp(priv, "RX DPO", &tss->ts[0]);
+			#pragma clang diagnostic push
+			#pragma clang diagnostic ignored "-Wsign-compare"
 			if (stats->send <= priv->last_dpo && priv->last_dpo != -1)
 				warnx("same dpo? current: %i, last: %i",
 				      stats->send, priv->last_dpo);
+			#pragma clang diagnostic pop
 			priv->last_dpo = stats->send;
 			return 0;
 		case J1939_EE_INFO_RX_ABORT:
