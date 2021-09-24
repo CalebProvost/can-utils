@@ -61,7 +61,7 @@ static void onsigalrm(int sig)
 
 static void schedule_oneshot_itimer(double delay)
 {
-	struct itimerval it = { 0 };
+	struct itimerval it = { {0}, {0} };
 
 	it.it_value.tv_sec = delay;
 	it.it_value.tv_usec = (long)(delay * 1e6) % 1000000;
