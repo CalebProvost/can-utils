@@ -1,0 +1,45 @@
+socketcanlib_sources = [
+    "lib.c",
+    "canframelen.c",
+]
+
+cc_library_headers {
+    name: "socketcanlib_headers",
+    host_supported: true,
+    vendor_available: true,
+    export_include_dirs: ["include", "./"],
+    system_shared_libs: [],
+    stl: "none",
+    target: {
+        windows: {
+            enabled: true,
+        },
+        linux_bionic: {
+            enabled: true,
+        },
+    },
+}
+
+// Shared and static library for host and device
+cc_library {
+    name: "socketcanlib",
+    host_supported: true,
+    vendor_available: true,
+    srcs: socketcanlib_sources,
+
+    shared_libs: ["liblog"],
+    cflags: [
+        "-O2",
+        "-g",
+        "-W",
+        "-Wall",
+        "-Wno-error=unused-parameter",
+        "-DSO_RXQ_OVFL=40",
+        "-DPF_CAN=29",
+        "-DAF_CAN=PF_CAN",
+    ],
+
+    header_libs: ["socketcanlib_headers"],
+    export_header_lib_headers: ["socketcanlib_headers"],
+    compile_multilib: "both",
+}
